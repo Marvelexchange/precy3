@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trade with Precy - Forex & Crypto Trading</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <style>
+        /* Tailwind CSS Base and Utilities */
+        *, ::before, ::after {
+            box-sizing: border-box;
+            border-width: 0;
+            border-style: solid;
+            border-color: #e5e7eb;
+        }
+        html {
+            line-height: 1.5;
+            -webkit-text-size-adjust: 100%;
+        }
+        body {
+            margin: 0;
+            line-height: inherit;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #1a202c;
+            position: relative;
+        }
+        h1, h2, h3 {
+            font-size: inherit;
+            font-weight: inherit;
+        }
+        a {
+            color: inherit;
+            text-decoration: inherit;
+        }
+        button, input, textarea {
+            font-family: inherit;
+            font-size: 100%;
+            line-height: inherit;
+            color: inherit;
+            margin: 0;
+            padding: 0;
+        }
+        button {
+            cursor: pointer;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .container {
+            width: 100%;
+            margin-right: auto;
+            margin-left: auto;
+            padding-right: 1.5rem;
+            padding-left: 1.5rem;
+        }
+        @media (min-width: 640px) {
+            .container {
+                max-width: 640px;
+            }
+        }
+        @media (min-width: 768px) {
+            .container {
+                max-width: 768px;
+            }
+        }
+        @media (min-width: 1024px) {
+            .container {
+                max-width: 1024px;
+            }
+        }
+        .mx-auto {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .mt-8 {
+            margin-top: 2rem;
+        }
+        .mb-4 {
+            margin-bottom: 1rem;
+        }
+        .mb-8 {
+            margin-bottom: 2rem;
+        }
+        .mb-12 {
+            margin-bottom: 3rem;
+        }
+        .max-w-lg {
+            max-width: 32rem;
+        }
+        .max-w-2xl {
+            max-width: 42rem;
+        }
+        .flex {
+            display: flex;
+        }
+        .hidden {
+            display: none;
+        }
+        .min-h-screen {
+            min-height: 100vh;
+        }
+        .w-full {
+            width: 100%;
+        }
+        .space-x-6 > :not([hidden]) ~ :not([hidden]) {
+            margin-left: 1.5rem;
+        }
+        .space-y-4 > :not([hidden]) ~ :not([hidden]) {
+            margin-top: 1rem;
+        }
+        .justify-between {
+            justify-content: space-between;
+        }
+        .justify-center {
+            justify-content: center;
+        }
+        .items-center {
+            align-items: center;
+        }
+        .gap-8 {
+            gap: 2rem;
+        }
+        .grid {
+            display: grid;
+        }
+        .grid-cols-1 {
+            grid-template-columns: repeat(1, minmax(0, 1fr));
+        }
+        @media (min-width: 768px) {
+            .md\:grid-cols-2 {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+            .md\:grid-cols-3 {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+        .rounded-lg {
+            border-radius: 0.5rem;
+        }
+        .rounded-full {
+            border-radius: 9999px;
+        }
+        .bg-gray-800 {
+            background-color: #2d3748;
+        }
+        .bg-gray-900 {
+            background-color: #1a202c;
+        }
+        .bg-gray-700 {
+            background-color: #4a5568;
+        }
+        .bg-blue-500 {
+            background-color: #3b82f6;
+        }
+        .bg-blue-600 {
+            background-color: #2563eb;
+        }
+        .p-3 {
+            padding: 0.75rem;
+        }
+        .p-6 {
+            padding: 1.5rem;
+        }
+        .px-4 {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+        .px-6 {
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
+        }
+        .py-2 {
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+        }
+        .py-3 {
+            padding-top: 0.75rem;
+            padding-bottom: 0.75rem;
+        }
+        .py-4 {
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+        .py-6 {
+            padding-top: 1.5rem;
+            padding-bottom: 1.5rem;
+        }
+        .py-16 {
+            padding-top: 4rem;
+            padding-bottom: 4rem;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .text-xl {
+            font-size: 1.25rem;
+            line-height: 1.75rem;
+        }
+        .text-2xl {
+            font-size: 1.5rem;
+            line-height: 2rem;
+        }
+        .text-4xl {
+            font-size: 2.25rem;
+            line-height: 2.5rem;
+        }
+        .text-5xl {
+            font-size: 3rem;
+            line-height: 1;
+        }
+        .font-semibold {
+            font-weight: 600;
+        }
+        .font-bold {
+            font-weight: 700;
+        }
+        .text-white {
+            color: #fff;
+        }
+        .text-blue-400 {
+            color: #60a5fa;
+        }
+        .hover\:bg-blue-600:hover {
+            background-color: #2563eb;
+        }
+        .hover\:text-blue-400:hover {
+            color: #60a5fa;
+        }
+        .focus\:outline-none:focus {
+            outline: 2px solid transparent;
+            outline-offset: 2px;
+        }
+        .focus\:ring-2:focus {
+            --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+            --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+            box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+        }
+        .focus\:ring-blue-500:focus {
+            --tw-ring-color: #3b82f6;
+        }
+        .transition {
+            transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 150ms;
+        }
+        @media (min-width: 640px) {
+            .sm\:flex {
+                display: flex;
+            }
+            .sm\:hidden {
+                display: none;
+            }
+            .sm\:visible {
+                visibility: visible;
+            }
+        }
+        /* Custom Styles */
+        .hero-bg {
+            background: linear-gradient(180deg, #3b82f6 0%, #1e40af 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(255,255,255,0.1)" fill-opacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,112C960,128,1056,160,1152,160C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat bottom;
+            opacity: 0.3;
+        }
+        .nav-links a {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #60a5fa;
+            transition: width 0.3s ease;
+        }
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        @media (max-width: 640px) {
+            .nav-links {
+                display: none;
+            }
+            .nav-links.active {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background-color: #2d3748;
+                padding: 1rem;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                z-index: 40;
+            }
+            .nav-links.active a {
+                padding: 0.5rem 0;
+                text-align: center;
+                font-size: 1.1rem;
+            }
+        }
+        .service-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
+        }
+        .testimonial-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: transform 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .testimonial-card img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
+        }
+        .cta-button, .submit-button {
+            background: linear-gradient(45deg, #3b82f6, #60a5fa);
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .cta-button:hover, .submit-button:hover {
+            background: linear-gradient(45deg, #2563eb, #3b82f6);
+            box-shadow: 0 4px 8px rgba(59, 130, 246, 0.4);
+        }
+        .social-icon {
+            background: #e2e8f0;
+            color: #3b82f6;
+            transition: all 0.3s ease;
+            animation: socialFloat 3s ease-in-out infinite;
+        }
+        .social-icon:hover {
+            background: #3b82f6;
+            color: #ffffff;
+            transform: scale(1.2);
+            animation: none;
+        }
+        @keyframes socialFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        .tooltip::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #2d3748;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+        .tooltip:hover::after {
+            opacity: 1;
+        }
+        .typing-text {
+            display: inline-block;
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 2px solid #3b82f6;
+            animation: typing 12s steps(40, end) infinite, blink 0.5s step-end infinite;
+        }
+        @keyframes typing {
+            0% { width: 0; }
+            50% { width: 100%; }
+            100% { width: 0; }
+        }
+        @keyframes blink {
+            50% { border-color: transparent; }
+        }
+        .pulse {
+            animation: pulse 2s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        .btn-loading {
+            position: relative;
+            pointer-events: none;
+        }
+        .btn-loading::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #fff;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+        }
+        @keyframes spin {
+            to { transform: translateY(-50%) rotate(360deg); }
+        }
+        #back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, #3b82f6, #60a5fa);
+            color: #ffffff;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        #back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        #back-to-top:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(59, 130, 246, 0.4);
+        }
+        #chatbot {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 300px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: none;
+            z-index: 100;
+            border: 1px solid #e2e8f0;
+        }
+        #chatbot.active {
+            display: block;
+        }
+        #chatbot-header {
+            background: linear-gradient(45deg, #3b82f6, #60a5fa);
+            color: #ffffff;
+            padding: 10px;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            font-weight: 600;
+        }
+        #chatbot-body {
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 10px;
+        }
+        #chatbot-input {
+            display: flex;
+            border-top: 1px solid #e2e8f0;
+        }
+        #chatbot-input input {
+            flex: 1;
+            background-color: transparent;
+            border: none;
+            padding: 10px;
+            color: #1a202c;
+            outline: none;
+        }
+        #chatbot-input button {
+            background: #3b82f6;
+            color: #ffffff;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+        }
+        #chatbot-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, #3b82f6, #60a5fa);
+            color: #ffffff;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        #chatbot-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(59, 130, 246, 0.4);
+        }
+        #admin-form {
+            display: none;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        #admin-form.active {
+            display: block;
+        }
+        .animated {
+            will-change: transform, opacity;
+        }
+        .hover-scale {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .hover-scale:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="bg-gray-800 py-4 sticky top-0 z-50 shadow-lg">
+        <nav class="container mx-auto flex justify-between items-center px-6">
+            <div class="text-2xl font-bold text-blue-400 flex items-center animated">
+                <svg width="40" height="40" viewBox="0 0 100 100" class="mr-2 pulse">
+                    <polyline points="10,90 30,70 50,80 70,60 90,70" fill="none" stroke="#60a5fa" stroke-width="5"/>
+                </svg>
+                <span class="typing-text">Trade with Precy</span>
+            </div>
+            <button id="menu-toggle" class="sm:hidden text-blue-400 focus:outline-none">
+                <i class="fas fa-bars fa-lg"></i>
+            </button>
+            <ul class="nav-links flex space-x-6 sm:flex hidden sm:visible">
+                <li><a href="#home" class="hover:text-blue-400 transition animated">Home</a></li>
+                <li><a href="#services" class="hover:text-blue-400 transition animated">Services</a></li>
+                <li><a href="#about" class="hover:text-blue-400 transition animated">About</a></li>
+                <li><a href="#testimonials" class="hover:text-blue-400 transition animated">Testimonials</a></li>
+                <li><a href="#contact" class="hover:text-blue-400 transition animated">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="min-h-screen flex items-center hero-bg">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-5xl font-bold mb-4 hero-title animated text-white">Master the Markets with Trade with Precy</h1>
+            <p class="text-xl mb-8 hero-subtitle animated text-white">Your trusted partner in forex and cryptocurrency trading. Unlock mentorship, signals, and account management.</p>
+            <a href="#contact" class="bg-blue-500 text-white py-3 px-6 rounded-full hover:bg-blue-600 transition cta-button animated">Get Started</a>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-16 bg-gray-800">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-center mb-12 service-title animated text-white">Our Services</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="p-6 rounded-lg hover-scale service-card animated">
+                    <h3 class="text-2xl font-semibold mb-4">Mentorship</h3>
+                    <p>Learn from experienced traders with personalized guidance to navigate forex and crypto markets confidently.</p>
+                </div>
+                <div class="p-6 rounded-lg hover-scale service-card animated">
+                    <h3 class="text-2xl font-semibold mb-4">Signal Provision</h3>
+                    <p>Receive accurate, timely trading signals to make informed decisions and maximize your profits.</p>
+                </div>
+                <div class="p-6 rounded-lg hover-scale service-card animated">
+                    <h3 class="text-2xl font-semibold mb-4">Account Management</h3>
+                    <p>Let our experts manage your trading account to optimize returns while you focus on what matters.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-16 bg-gray-900">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-4xl font-bold mb-12 about-title animated text-white">About Trade with Precy</h2>
+            <p class="text-lg mb-8 max-w-2xl mx-auto about-text animated text-white">Trade with Precy is dedicated to empowering traders worldwide. With a focus on forex and cryptocurrency, we provide top-tier mentorship, reliable trading signals, and professional account management to help you succeed in the dynamic world of trading.</p>
+            <a href="#contact" class="bg-blue-500 text-white py-3 px-6 rounded-full hover:bg-blue-600 transition cta-button animated">Join Us Today</a>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="py-16 bg-gray-800">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-center mb-12 animated text-white">What Our Clients Say</h2>
+            <button id="toggle-admin" class="mb-8 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition">Add Testimonial</button>
+            <form id="admin-form" class="space-y-4">
+                <input type="text" name="name" placeholder="Client Name" class="w-full p-3 bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                <textarea name="text" placeholder="Testimonial" rows="4" class="w-full p-3 bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required></textarea>
+                <input type="file" name="image" accept="image/*" class="w-full p-3 bg-gray-700 rounded-lg">
+                <button type="submit" class="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition">Submit Testimonial</button>
+            </form>
+            <div id="testimonials-list" class="grid grid-cols-1 md:grid-cols-2 gap-8"></div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 bg-gray-800">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-center mb-12 contact-title animated text-white">Get in Touch</h2>
+            <div class="max-w-lg mx-auto">
+                <form id="contact-form" class="space-y-4">
+                    <input type="text" name="name" placeholder="Your Name" class="w-full p-3 bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 animated" required>
+                    <input type="email" name="email" placeholder="Your Email" class="w-full p-3 bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 animated" required>
+                    <textarea name="message" placeholder="Your Message" rows="5" class="w-full p-3 bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 animated" required></textarea>
+                    <button type="submit" class="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition submit-button animated">Send Message</button>
+                </form>
+                <div class="mt-8 flex justify-center space-x-6">
+                    <a href="https://t.me/Precyyfx" target="_blank" class="social-icon rounded-full p-3 tooltip animated" data-tooltip="Telegram">
+                        <i class="fab fa-telegram-plane fa-lg"></i>
+                    </a>
+                    <a href="https://instagram.com/tradewithprecy" target="_blank" class="social-icon rounded-full p-3 tooltip animated" data-tooltip="Instagram">
+                        <i class="fab fa-instagram fa-lg"></i>
+                    </a>
+                    <a href="https://x.com/tradewithprecy" target="_blank" class="social-icon rounded-full p-3 tooltip animated" data-tooltip="X">
+                        <i class="fab fa-x-twitter fa-lg"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 py-6 text-center">
+        <p class="text-white">© 2025 Trade with Precy. All rights reserved.</p>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" title="Back to Top" class="animated">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Chatbot -->
+    <div id="chatbot">
+        <div id="chatbot-header">Trade with Precy Bot</div>
+        <div id="chatbot-body"></div>
+        <div id="chatbot-input">
+            <input type="text" placeholder="Type a message..." id="chatbot-message">
+            <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+    <div id="chatbot-toggle" onclick="toggleChatbot()">
+        <i class="fas fa-comment-dots"></i>
+    </div>
+
+    <script>
+        // GSAP Animations
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Smooth animations for hero section
+        gsap.to(".hero-title", {
+            y: 10,
+            opacity: 0.9,
+            duration: 2,
+            repeat: -1,
+            yoyo: true,
+            ease: "sine.inOut"
+        });
+        gsap.to(".hero-subtitle", {
+            y: 10,
+            opacity: 0.9,
+            duration: 2.5,
+            repeat: -1,
+            yoyo: true,
+            ease: "sine.inOut",
+            delay: 0.2
+        });
+        gsap.to(".cta-button", {
+            scale: 1.05,
+            duration: 1.5,
+            repeat: -1,
+            yoyo: true,
+            ease: "power1.inOut"
+        });
+
+        // Service cards animation
+        gsap.utils.toArray(".service-card").forEach((card, i) => {
+            gsap.to(card, {
+                y: 10,
+                duration: 2 + i * 0.5,
+                repeat: -1,
+                yoyo: true,
+                ease: "sine.inOut",
+                scrollTrigger: {
+                    trigger: card,
+                    start: "top 90%",
+                    end: "bottom 10%",
+                    toggleActions: "play pause resume pause"
+                }
+            });
+        });
+
+        // About section animation
+        gsap.to(".about-title", {
+            y: 10,
+            opacity: 0.9,
+            duration: 2,
+            repeat: -1,
+            yoyo: true,
+            ease: "sine.inOut",
+            scrollTrigger: {
+                trigger: ".about-title",
+                start: "top 90%",
+                end: "bottom 10%",
+                toggleActions: "play pause resume pause"
+            }
+        });
+        gsap.to(".about-text", {
+            y: 10,
+            opacity: 0.9,
+            duration: 2.5,
+            repeat: -1,
+            yoyo: true,
+            ease: "sine.inOut",
+            scrollTrigger: {
+                trigger: ".about-text",
+                start: "top 90%",
+                end: "bottom 10%",
+                toggleActions: "play pause resume pause"
+            }
+        });
+
+        // Testimonials section animation
+        gsap.to("#testimonials h2", {
+            y: 10,
+            opacity: 0.9,
+            duration: 2,
+            repeat: -1,
+            yoyo: true,
+            ease: "sine.inOut",
+            scrollTrigger: {
+                trigger: "#testimonials h2",
+                start: "top 90%",
+                end: "bottom 10%",
+                toggleActions: "play pause resume pause"
+            }
+        });
+        gsap.utils.toArray(".testimonial-card").forEach((card, i) => {
+            gsap.to(card, {
+                y: 10,
+                duration: 2 + i * 0.5,
+                repeat: -1,
+                yoyo: true,
+                ease: "sine.inOut",
+                scrollTrigger: {
+                    trigger: card,
+                    start: "top 90%",
+                    end: "bottom 10%",
+                    toggleActions: "play pause resume pause"
+                }
+            });
+        });
+
+        // Contact section animation
+        gsap.to(".contact-title", {
+            y: 10,
+            opacity: 0.9,
+            duration: 2,
+            repeat: -1,
+            yoyo: true,
+            ease: "sine.inOut",
+            scrollTrigger: {
+                trigger: ".contact-title",
+                start: "top 90%",
+                end: "bottom 10%",
+                toggleActions: "play pause resume pause"
+            }
+        });
+        gsap.utils.toArray("#contact-form > *").forEach((element, i) => {
+            gsap.to(element, {
+                y: 5,
+                duration: 2 + i * 0.2,
+                repeat: -1,
+                yoyo: true,
+                ease: "sine.inOut",
+                scrollTrigger: {
+                    trigger: "#contact-form",
+                    start: "top 90%",
+                    end: "bottom 10%",
+                    toggleActions: "play pause resume pause"
+                }
+            });
+        });
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Hamburger menu toggle
+        const menuToggle = document.getElementById('menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            const icon = menuToggle.querySelector('i');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
+        });
+
+        // Contact form submission
+        const contactForm = document.getElementById('contact-form');
+        const submitButton = contactForm.querySelector('.submit-button');
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (contactForm.checkValidity()) {
+                submitButton.classList.add('btn-loading');
+                submitButton.textContent = 'Sending...';
+                setTimeout(() => {
+                    console.log({
+                        name: contactForm.name.value,
+                        email: contactForm.email.value,
+                        message: contactForm.message.value
+                    });
+                    alert('Message sent successfully!');
+                    contactForm.reset();
+                    submitButton.classList.remove('btn-loading');
+                    submitButton.textContent = 'Send Message';
+                }, 1500);
+            } else {
+                contactForm.reportValidity();
+            }
+        });
+
+        // CTA button click handlers
+        document.querySelectorAll('.cta-button').forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                document.querySelector('#contact').scrollIntoView({ behavior: 'smooth' });
+                console.log('CTA button clicked:', button.textContent);
+            });
+        });
+
+        // Back to top button
+        const backToTop = document.getElementById('back-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Chatbot functionality
+        const chatbot = document.getElementById('chatbot');
+        const chatbotBody = document.getElementById('chatbot-body');
+        const chatbotMessage = document.getElementById('chatbot-message');
+        const responses = {
+            'hello': 'Hi! How can I assist you with your trading journey today?',
+            'services': 'We offer mentorship, trading signals, and account management. Visit our Services section for more details!',
+            'contact': 'You can reach us via the Contact section or message us here!',
+            'default': 'I’m here to help! Ask about our services, trading tips, or anything else.'
+        };
+
+        function sendMessage() {
+            const message = chatbotMessage.value.trim().toLowerCase();
+            if (!message) return;
+
+            const userMsg = document.createElement('div');
+            userMsg.textContent = 'You: ' + message;
+            chatbotBody.appendChild(userMsg);
+
+            const botMsg = document.createElement('div');
+            botMsg.textContent = 'Bot: ' + (responses[message] || responses['default']);
+            chatbotBody.appendChild(botMsg);
+
+            chatbotMessage.value = '';
+            chatbotBody.scrollTop = chatbotBody.scrollHeight;
+        }
+
+        function toggleChatbot() {
+            chatbot.classList.toggle('active');
+            if (chatbot.classList.contains('active')) {
+                gsap.to(chatbot, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out" });
+            } else {
+                gsap.to(chatbot, { scale: 0.8, opacity: 0, duration: 0.5, ease: "back.in" });
+            }
+        }
+
+        chatbotMessage.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+
+        // Testimonial functionality
+        const adminForm = document.getElementById('admin-form');
+        const toggleAdmin = document.getElementById('toggle-admin');
+        const testimonialsList = document.getElementById('testimonials-list');
+
+        function loadTestimonials() {
+            testimonialsList.innerHTML = '';
+            const testimonials = JSON.parse(localStorage.getItem('testimonials') || '[]');
+            testimonials.forEach(testimonial => {
+                const card = document.createElement('div');
+                card.className = 'testimonial-card animated';
+                if (testimonial.image) {
+                    const img = document.createElement('img');
+                    img.src = testimonial.image;
+                    img.alt = testimonial.name;
+                    card.appendChild(img);
+                }
+                const content = document.createElement('div');
+                content.innerHTML = `<h3 class="text-xl font-semibold mb-2">${testimonial.name}</h3><p>${testimonial.text}</p>`;
+                card.appendChild(content);
+                testimonialsList.appendChild(card);
+            });
+        }
+
+        adminForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = adminForm.name.value;
+            const text = adminForm.text.value;
+            const image = adminForm.image.files[0];
+
+            const testimonial = { name, text };
+
+            if (image) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    testimonial.image = e.target.result;
+                    saveTestimonial(testimonial);
+                };
+                reader.readAsDataURL(image);
+            } else {
+                saveTestimonial(testimonial);
+            }
+
+            adminForm.reset();
+            adminForm.classList.remove('active');
+        });
+
+        function saveTestimonial(testimonial) {
+            const testimonials = JSON.parse(localStorage.getItem('testimonials') || '[]');
+            testimonials.push(testimonial);
+            localStorage.setItem('testimonials', JSON.stringify(testimonials));
+            loadTestimonials();
+        }
+
+        toggleAdmin.addEventListener('click', () => {
+            adminForm.classList.toggle('active');
+        });
+
+        loadTestimonials();
+    </script>
+</body>
+</html>
